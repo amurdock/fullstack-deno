@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  monolith:
+    command: run --allow-all --import-map=import_map.json --watch mono/libs/server.ts
+    container_name: monolith
+    image: lukechannings/deno:v1.33.3
+    ports:
+      - 8000:8000
+    volumes:
+      - ./import_map.json:/project/import_map.json
+      - ./mono:/project/mono
+    working_dir: /project
+  web:
+    command: run --allow-all --node-modules-dir npm:vite web --host
+    container_name: web
+    image: lukechannings/deno:v1.33.3
+    ports:
+      - 3000:3000
+    volumes:
+      - ./web:/project/web
+    working_dir: /project
+
